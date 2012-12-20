@@ -55,8 +55,7 @@ class Daemon(object):
                 # Exit first parent
                 sys.exit(0)
         except OSError, e:
-            sys.stderr.write('fork #1 failed: %d (%s)\n' %
-                             (e.errno, e.strerror))
+            sys.stderr.write('fork #1 failed: {0}\n'.format(e))
             sys.exit(1)
 
         # Decouple from parent environment
@@ -71,8 +70,7 @@ class Daemon(object):
                 # Exit from second parent
                 sys.exit(0)
         except OSError, e:
-            sys.stderr.write('fork #2 failed: %d (%s)\n' %
-                             (e.errno, e.strerror))
+            sys.stderr.write('fork #2 failed: {0}\n'.format(e))
             sys.exit(1)
 
         if sys.platform != 'darwin':  # This block breaks on OS X
@@ -101,7 +99,7 @@ class Daemon(object):
         # Make sure pid file is removed if we quit
         atexit.register(self.delpid)
         pid = str(os.getpid())
-        file(self.pidfile, 'w+').write('%s\n' % pid)
+        file(self.pidfile, 'w+').write(pid + '\n')
 
     def delpid(self):
         os.remove(self.pidfile)
@@ -123,8 +121,8 @@ class Daemon(object):
             pid = None
 
         if pid:
-            message = 'pidfile %s already exists. Is it already running?\n'
-            sys.stderr.write(message % self.pidfile)
+            message = 'pidfile {0} already exists. Is it already running?\n'
+            sys.stderr.write(message.format(self.pidfile))
             sys.exit(1)
 
         # Start the daemon
@@ -148,8 +146,8 @@ class Daemon(object):
             pid = None
 
         if not pid:
-            message = 'pidfile %s does not exist. Not running?\n'
-            sys.stderr.write(message % self.pidfile)
+            message = 'pidfile {0} does not exist. Not running?\n'
+            sys.stderr.write(message.format(self.pidfile))
 
             # Just to be sure. A ValueError might occur if the PID file is
             # empty but does actually exist
