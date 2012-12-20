@@ -105,7 +105,7 @@ class Daemon(object):
     def delpid(self):
         os.remove(self.pidfile)
 
-    def start(self, *args, **kwargs):
+    def start(self):
         """Start the daemon."""
 
         if self.verbose >= 1:
@@ -125,7 +125,7 @@ class Daemon(object):
 
         # Start the daemon
         self.daemonize()
-        self.run(*args, **kwargs)
+        self.run()
 
     def stop(self):
         """Stop the daemon."""
