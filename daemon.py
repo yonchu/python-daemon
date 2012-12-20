@@ -22,10 +22,11 @@
 # Core modules
 from __future__ import print_function
 import atexit
+import errno
 import os
+import signal
 import sys
 import time
-import signal
 
 
 class Daemon(object):
@@ -103,7 +104,14 @@ class Daemon(object):
             f.write(pid + '\n')
 
     def delpid(self):
-        os.remove(self.pidfile)
+        try:
+            os.remove(self.pidfile)
+        except OSError as e:
+            if e.errno == errno.ENOENT:
+                # No such file or directory
+                pass
+            else:
+                raise
 
     def start(self):
         """Start the daemon."""
