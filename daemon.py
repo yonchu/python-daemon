@@ -54,7 +54,7 @@ class Daemon(object):
                 # Exit first parent
                 sys.exit(0)
         except OSError, e:
-            sys.stderr.write("fork #1 failed: %d (%s)\n" %
+            sys.stderr.write('fork #1 failed: %d (%s)\n' %
                              (e.errno, e.strerror))
             sys.exit(1)
 
@@ -70,7 +70,7 @@ class Daemon(object):
                 # Exit from second parent
                 sys.exit(0)
         except OSError, e:
-            sys.stderr.write("fork #2 failed: %d (%s)\n" %
+            sys.stderr.write('fork #2 failed: %d (%s)\n' %
                              (e.errno, e.strerror))
             sys.exit(1)
 
@@ -94,13 +94,13 @@ class Daemon(object):
         signal.signal(signal.SIGINT, sigtermhandler)
 
         if self.verbose >= 1:
-            print "Started"
+            print 'Started'
 
         # Write pidfile
         # Make sure pid file is removed if we quit
         atexit.register(self.delpid)
         pid = str(os.getpid())
-        file(self.pidfile, 'w+').write("%s\n" % pid)
+        file(self.pidfile, 'w+').write('%s\n' % pid)
 
     def delpid(self):
         os.remove(self.pidfile)
@@ -109,7 +109,7 @@ class Daemon(object):
         """Start the daemon."""
 
         if self.verbose >= 1:
-            print "Starting..."
+            print 'Starting...'
 
         # Check for a pidfile to see if the daemon already runs
         try:
@@ -122,7 +122,7 @@ class Daemon(object):
             pid = None
 
         if pid:
-            message = "pidfile %s already exists. Is it already running?\n"
+            message = 'pidfile %s already exists. Is it already running?\n'
             sys.stderr.write(message % self.pidfile)
             sys.exit(1)
 
@@ -134,7 +134,7 @@ class Daemon(object):
         """Stop the daemon."""
 
         if self.verbose >= 1:
-            print "Stopping..."
+            print 'Stopping...'
 
         # Get the pid from the pidfile
         try:
@@ -147,7 +147,7 @@ class Daemon(object):
             pid = None
 
         if not pid:
-            message = "pidfile %s does not exist. Not running?\n"
+            message = 'pidfile %s does not exist. Not running?\n'
             sys.stderr.write(message % self.pidfile)
 
             # Just to be sure. A ValueError might occur if the PID file is
@@ -164,7 +164,7 @@ class Daemon(object):
                 time.sleep(0.1)
         except OSError, err:
             err = str(err)
-            if err.find("No such process") > 0:
+            if err.find('No such process') > 0:
                 if os.path.exists(self.pidfile):
                     os.remove(self.pidfile)
             else:
@@ -172,7 +172,7 @@ class Daemon(object):
                 sys.exit(1)
 
         if self.verbose >= 1:
-            print "Stopped"
+            print 'Stopped'
 
     def restart(self):
         """Restart the daemon."""
