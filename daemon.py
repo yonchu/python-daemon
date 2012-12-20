@@ -77,10 +77,10 @@ class Daemon(object):
             # Redirect standard file descriptors
             sys.stdout.flush()
             sys.stderr.flush()
-            si = file(self.stdin, 'r')
-            so = file(self.stdout, 'a+')
+            si = open(self.stdin, 'r')
+            so = open(self.stdout, 'a+')
             if self.stderr:
-                se = file(self.stderr, 'a+', 0)
+                se = open(self.stderr, 'a+', 0)
             else:
                 se = so
             os.dup2(si.fileno(), sys.stdin.fileno())
@@ -99,7 +99,8 @@ class Daemon(object):
         # Make sure pid file is removed if we quit
         atexit.register(self.delpid)
         pid = str(os.getpid())
-        file(self.pidfile, 'w+').write(pid + '\n')
+        with open(self.pidfile, 'w+') as f:
+            f.write(pid + '\n')
 
     def delpid(self):
         os.remove(self.pidfile)
@@ -112,9 +113,8 @@ class Daemon(object):
 
         # Check for a pidfile to see if the daemon already runs
         try:
-            pf = file(self.pidfile, 'r')
-            pid = int(pf.read().strip())
-            pf.close()
+            with open(self.pidfile, 'r') as pf:
+                pid = int(pf.read().strip())
         except IOError:
             pid = None
         except SystemExit:
@@ -137,9 +137,8 @@ class Daemon(object):
 
         # Get the pid from the pidfile
         try:
-            pf = file(self.pidfile, 'r')
-            pid = int(pf.read().strip())
-            pf.close()
+            with open(self.pidfile, 'r') as pf:
+                pid = int(pf.read().strip())
         except IOError:
             pid = None
         except ValueError:
