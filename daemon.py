@@ -34,7 +34,7 @@ class Daemon(object):
 
     Usage: subclass the Daemon class and override the run() method."""
     def __init__(self, pidfile, stdin=os.devnull, stdout=os.devnull,
-                 stderr=os.devnull, home_dir='.', umask=022, verbose=0):
+                 stderr=os.devnull, home_dir='.', umask=0o22, verbose=0):
         self.stdin = stdin
         self.stdout = stdout
         self.stderr = stderr
@@ -55,7 +55,7 @@ class Daemon(object):
             if pid > 0:
                 # Exit first parent
                 sys.exit(0)
-        except OSError, e:
+        except OSError as e:
             sys.stderr.write('fork #1 failed: {0}\n'.format(e))
             sys.exit(1)
 
@@ -70,7 +70,7 @@ class Daemon(object):
             if pid > 0:
                 # Exit from second parent
                 sys.exit(0)
-        except OSError, e:
+        except OSError as e:
             sys.stderr.write('fork #2 failed: {0}\n'.format(e))
             sys.exit(1)
 
@@ -170,7 +170,7 @@ class Daemon(object):
                     i += 1
                 else:
                     os.kill(pid, signal.SIGHUP)
-        except OSError, err:
+        except OSError as err:
             err = str(err)
             if err.find('No such process') > 0:
                 if os.path.exists(self.pidfile):
