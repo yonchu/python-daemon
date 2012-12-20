@@ -73,7 +73,7 @@ class Daemon(object):
             sys.stderr.write("fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
             sys.exit(1)
 
-        if sys.platform != 'darwin': # This block breaks on OS X
+        if sys.platform != 'darwin':  # This block breaks on OS X
             # Redirect standard file descriptors
             sys.stdout.flush()
             sys.stderr.flush()
@@ -96,9 +96,9 @@ class Daemon(object):
             print "Started"
 
         # Write pidfile
-        atexit.register(self.delpid) # Make sure pid file is removed if we quit
+        atexit.register(self.delpid)  # Make sure pid file is removed if we quit
         pid = str(os.getpid())
-        file(self.pidfile,'w+').write("%s\n" % pid)
+        file(self.pidfile, 'w+').write("%s\n" % pid)
 
     def delpid(self):
         os.remove(self.pidfile)
@@ -113,7 +113,7 @@ class Daemon(object):
 
         # Check for a pidfile to see if the daemon already runs
         try:
-            pf = file(self.pidfile,'r')
+            pf = file(self.pidfile, 'r')
             pid = int(pf.read().strip())
             pf.close()
         except IOError:
@@ -140,7 +140,7 @@ class Daemon(object):
 
         # Get the pid from the pidfile
         try:
-            pf = file(self.pidfile,'r')
+            pf = file(self.pidfile, 'r')
             pid = int(pf.read().strip())
             pf.close()
         except IOError:
@@ -156,7 +156,7 @@ class Daemon(object):
             if os.path.exists(self.pidfile):
                 os.remove(self.pidfile)
 
-            return # Not an error in a restart
+            return  # Not an error in a restart
 
         # Try killing the daemon process
         try:
@@ -187,4 +187,3 @@ class Daemon(object):
         You should override this method when you subclass Daemon. It will be called after the process has been
         daemonized by start() or restart().
         """
-
