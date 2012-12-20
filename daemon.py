@@ -20,6 +20,7 @@
 """
 
 # Core modules
+from __future__ import print_function
 import atexit
 import os
 import sys
@@ -94,7 +95,7 @@ class Daemon(object):
         signal.signal(signal.SIGINT, sigtermhandler)
 
         if self.verbose >= 1:
-            print 'Started'
+            print('Started')
 
         # Write pidfile
         # Make sure pid file is removed if we quit
@@ -109,7 +110,7 @@ class Daemon(object):
         """Start the daemon."""
 
         if self.verbose >= 1:
-            print 'Starting...'
+            print('Starting...')
 
         # Check for a pidfile to see if the daemon already runs
         try:
@@ -134,7 +135,7 @@ class Daemon(object):
         """Stop the daemon."""
 
         if self.verbose >= 1:
-            print 'Stopping...'
+            print('Stopping...')
 
         # Get the pid from the pidfile
         try:
@@ -168,11 +169,11 @@ class Daemon(object):
                 if os.path.exists(self.pidfile):
                     os.remove(self.pidfile)
             else:
-                print str(err)
+                print(str(err))
                 sys.exit(1)
 
         if self.verbose >= 1:
-            print 'Stopped'
+            print('Stopped')
 
     def restart(self):
         """Restart the daemon."""
