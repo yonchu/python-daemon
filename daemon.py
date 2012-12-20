@@ -93,13 +93,14 @@ class Daemon(object):
         signal.signal(signal.SIGTERM, sigtermhandler)
         signal.signal(signal.SIGINT, sigtermhandler)
 
+        pid = str(os.getpid())
+
         if self.verbose >= 1:
-            print('Started')
+            print('Started({0})'.format(pid))
 
         # Write pidfile
         # Make sure pid file is removed if we quit
         atexit.register(self.delpid)
-        pid = str(os.getpid())
         with open(self.pidfile, 'w+') as f:
             f.write(pid + '\n')
 
